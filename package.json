@@ -4,7 +4,8 @@
   "description": "a UI system using a Tree Data Structure to branch off user interactions to multiple conversations, multiple endings, and offer the ability to fire off events for whichever answer was chosen",
   "main": "webpack.config.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "webpack-dev-server",
+    "build": "webpack"
   },
   "repository": {
     "type": "git",
