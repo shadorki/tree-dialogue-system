@@ -7,6 +7,10 @@ export default class Tree {
     this.nodeCounter = 1
     this.root = new Node(this.nodeCounter)
   }
+  public getNodeById(nodeId: number): Node {
+    const node = this.root.find(nodeId)
+    return node
+  }
   public init(): HTMLElement {
     const element = this.root.init()
     return element

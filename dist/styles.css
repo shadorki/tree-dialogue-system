@@ -45,6 +45,7 @@ main {
 
 .node {
   position: absolute;
+  cursor: grab;
   margin: .3rem;
   padding: .5rem;
   background-color: rgb(34, 34, 34);
@@ -54,7 +55,9 @@ main {
   border-radius: 12px;
   box-shadow: 10px 5px 5px rgba(0, 0, 0, 0.555);
 }
-
+.node > * {
+  cursor: pointer;
+}
 .node>.answer {
   text-align: right;
 }

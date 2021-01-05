@@ -21,17 +21,17 @@ export default class Node {
     this._question = null
     this._position = null
   }
-  get position(): number[] {
+  public get position(): number[] {
     const { x, y } = this._position
     return [x, y]
   }
-  set position([x, y]: number[]) {
+  public set position([x, y]: number[]) {
     const newPosition = {
       x,
       y
     }
-    this.domElement.style.top = `${y}px`
     this.domElement.style.left = `${x}px`
+    this.domElement.style.top = `${y}px`
     this._position = newPosition
   }
   private createElement(): HTMLElement {
@@ -39,6 +39,7 @@ export default class Node {
     nodeElement.className = 'node'
     nodeElement.dataset.nodeId = this.nodeId.toString()
     this._question = document.createElement('p')
+    this._question.className = 'question'
     this._question.textContent = 'What is your Question?'
     const answers =
     Object
@@ -55,8 +56,17 @@ export default class Node {
     )
     return nodeElement
   }
+  public find(nodeId: number): Node {
+    if(nodeId === this.nodeId) return this
+    for(const key in this.children) {
+      const node = this.children[key].find(nodeId)
+      if(node) return node
+    }
+    return null
+  }
   public init(): HTMLElement {
     this.domElement = this.createElement()
+    this.position = [0, 0]
     return this.domElement
   }
 }
