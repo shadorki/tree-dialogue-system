@@ -1,4 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;900&display=swap');
+* {
+  box-sizing: border-box;
+  user-select: none;
+}
 
 body {
   margin: 0;
@@ -12,18 +16,17 @@ header {
   align-items: center;
   background-color: rgb(39, 39, 39);
   color: aliceblue;
-  user-select: none;
 }
 
-header > * {
-  margin:  .1rem 2.5rem;
+header>* {
+  margin: .1rem 2.5rem;
 }
 
-header > h1 {
+header>h1 {
   text-shadow: rgba(20, 20, 20, .5) 2px 5px;
 }
 
-nav > ul > li {
+nav>ul>li {
   cursor: pointer;
   display: inline;
   background-color: rgb(26, 26, 128);
@@ -31,6 +34,31 @@ nav > ul > li {
   border-radius: 12px;
   transition: background-color 100ms;
 }
-nav > ul > li:hover {
+
+nav>ul>li:hover {
   background-color: rgb(61, 61, 212);
+}
+
+main {
+  position: relative;
+}
+
+.node {
+  position: absolute;
+  margin: .3rem;
+  padding: .5rem;
+  background-color: rgb(34, 34, 34);
+  color: aliceblue;
+  min-width: 340px;
+  min-height: 165px;
+  border-radius: 12px;
+  box-shadow: 10px 5px 5px rgba(0, 0, 0, 0.555);
+}
+
+.node>.answer {
+  text-align: right;
+}
+
+.hidden {
+  display: none;
 }
