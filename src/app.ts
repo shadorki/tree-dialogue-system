@@ -23,10 +23,10 @@ export default class App {
   }
   private handleNodeMovement(e: MouseEvent): void {
     const [ width, height ] = this.currentMovingNode.dimensions
-    const { clientX, clientY } = e
+    const { pageX, pageY } = e
     this.currentMovingNode.position = [
-      clientX - width / 2,
-      clientY - height / 2
+      pageX - width / 2,
+      pageY - height / 2
     ]
   }
   private handleNodeMovementEnd(e: Event): void {
