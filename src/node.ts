@@ -72,7 +72,7 @@ export default class Node {
   }
   public init(): HTMLElement {
     this.domElement = this.createElement()
-    this.position = [0, 0]
+    this.position = [100, 100]
     return this.domElement
   }
 }

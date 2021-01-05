@@ -22,7 +22,6 @@ export default class App {
     window.addEventListener('mousemove', this.handleNodeMovement)
   }
   private handleNodeMovement(e: MouseEvent): void {
-    const [ x, y ] = this.currentMovingNode.position
     const [ width, height ] = this.currentMovingNode.dimensions
     const { clientX, clientY } = e
     this.currentMovingNode.position = [
