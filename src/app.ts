@@ -11,16 +11,33 @@ export default class App {
     this.tree = new Tree()
     this.isMovingNode = false
     this.currentMovingNode = null
+    this.handleNodeMovement = this.handleNodeMovement.bind(this)
   }
-  private handleNodeMovement(e: Event): void {
+  private handleNodeMovementStart(e: Event): void {
     const { nodeId } = e.target.dataset
     if(!nodeId) return
     const node = this.tree.getNodeById(Number(nodeId))
-    console.log('moooove')
-    console.log(node)
+    this.currentMovingNode = node
+    this.isMovingNode = true
+    window.addEventListener('mousemove', this.handleNodeMovement)
+  }
+  private handleNodeMovement(e: MouseEvent): void {
+    const [ x, y ] = this.currentMovingNode.position
+    const [ width, height ] = this.currentMovingNode.dimensions
+    const { clientX, clientY } = e
+    this.currentMovingNode.position = [
+      clientX - width / 2,
+      clientY - height / 2
+    ]
+  }
+  private handleNodeMovementEnd(e: Event): void {
+    this.currentMovingNode = null
+    this.isMovingNode = false
+    window.removeEventListener('mousemove', this.handleNodeMovement)
   }
   private addEventListeners(): void {
-    this.main.addEventListener('mousedown', this.handleNodeMovement.bind(this))
+    this.main.addEventListener('mousedown', this.handleNodeMovementStart.bind(this))
+    window.addEventListener('mouseup', this.handleNodeMovementEnd.bind(this))
   }
   public start(): void {
     this.addEventListeners()

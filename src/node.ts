@@ -34,6 +34,12 @@ export default class Node {
     this.domElement.style.top = `${y}px`
     this._position = newPosition
   }
+  public get dimensions(): number[] {
+    return [
+      this.domElement.offsetWidth,
+      this.domElement.offsetHeight
+    ]
+  }
   private createElement(): HTMLElement {
     const nodeElement = document.createElement('div')
     nodeElement.className = 'node'
