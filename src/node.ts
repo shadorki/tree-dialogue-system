@@ -1,6 +1,6 @@
 export default class Node {
   private domElement: HTMLElement
-  private nodeId: number
+  public nodeId: number
   private children: {
     [key: string]: Node
   }
@@ -43,16 +43,21 @@ export default class Node {
   private createElement(): HTMLElement {
     const nodeElement = document.createElement('div')
     nodeElement.className = 'node'
+    nodeElement.dataset.identifier = 'node'
     nodeElement.dataset.nodeId = this.nodeId.toString()
     this._question = document.createElement('p')
     this._question.className = 'question'
+    this._question.dataset.identifier = 'question'
     this._question.textContent = 'What is your Question?'
     const answers =
     Object
     .keys(this.children)
-    .map(answer => {
+    .map((answer, index) => {
       const a = document.createElement('p')
       a.textContent = answer
+      a.dataset.identifier = 'answer'
+      a.dataset.answerIndex = index
+      a.draggable = true
       a.className = 'answer'
       return a
     })

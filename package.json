@@ -27,5 +27,8 @@
   "bugs": {
     "url": "https://github.com/uzair-ashraf/tree-dialogue-system/issues"
   },
-  "homepage": "https://github.com/uzair-ashraf/tree-dialogue-system#readme"
+  "homepage": "https://github.com/uzair-ashraf/tree-dialogue-system#readme",
+  "dependencies": {
+    "connection-line": "^1.1.6"
+  }
 }
