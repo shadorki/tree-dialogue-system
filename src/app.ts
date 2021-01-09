@@ -1,23 +1,22 @@
 import Tree from "./tree"
 import Node from "./node"
 import LineManager from "./line-manager"
+import Collection from "./collection"
 
 export default class App {
   private header: HTMLElement
   private main: HTMLElement
   private tree: Tree
-  private collection: {
-    [key: number]: Node
-  }
+  private collection: Collection
   private lineManager: LineManager
   private currentMovingNode: Node
   private currentDraggingNode: Node
   constructor() {
     this.header = document.querySelector('header')
     this.main = document.querySelector('main')
-    this.tree = new Tree()
+    this.collection = new Collection()
+    this.tree = new Tree(this.collection)
     this.lineManager = new LineManager()
-    this.collection = {}
     this.currentMovingNode = null
     this.currentDraggingNode = null
     this.handleNodeMovement = this.handleNodeMovement.bind(this)
@@ -30,6 +29,8 @@ export default class App {
     if (!nodeElement) return
     if (Number(nodeElement.dataset.nodeId) === this.currentDraggingNode.nodeId) return
     e.preventDefault()
+    const answerId = e.dataTransfer.getData('text')
+    const { nodeId } = nodeElement.dataset
     nodeElement.classList.remove('dropping')
     nodeElement.style.border = '2px solid red'
     const line = this.lineManager.createLine(
@@ -37,16 +38,22 @@ export default class App {
       nodeElement
     )
     document.body.appendChild(line)
+    this.tree.appendNode(
+      this.currentDraggingNode,
+      nodeId,
+      answerId
+    )
   }
   private handleAnswerDragStart(e: DragEvent): void {
     const target = e.target as HTMLElement
-    const { identifier } = target.dataset
+    const { identifier, answerId } = target.dataset
     if(identifier !== 'answer') return
     const { nodeId } = target.parentElement.dataset
-    this.currentDraggingNode = nodeId in this.collection
-                              ? this.collection[nodeId]
+    this.currentDraggingNode = this.collection.has(nodeId)
+                              ? this.collection.get(nodeId)
                               : this.tree.getNodeById(Number(nodeId))
     e.dataTransfer.effectAllowed = 'uninitialized'
+    e.dataTransfer.setData('text/plain', answerId)
   }
   private handleAnswerDragOver(e: DragEvent): void {
     e.preventDefault()
@@ -62,7 +69,6 @@ export default class App {
   private handleAnswerDragLeave(e: DragEvent): void {
     const target = e.target as HTMLElement
     const { identifier } = target.dataset
-    console.log(identifier)
     if (identifier) target.classList.remove('dropping')
   }
   private handleNavAction(e: Event): void {
@@ -71,7 +77,7 @@ export default class App {
     const actions = {
       newNode: () => {
         const node = this.tree.createNode()
-        this.collection[node.nodeId] = node
+        this.collection.add(node)
         this.main.appendChild(node.init())
       },
       save: () => {},
@@ -85,8 +91,8 @@ export default class App {
     let nodeElement = this.sortEventElement(target)
     if(!nodeElement) return
     const { nodeId } = nodeElement.dataset
-    const node = nodeId in this.collection
-    ? this.collection[nodeId]
+    const node = this.collection.has(nodeId)
+    ? this.collection.get(nodeId)
     : this.tree.getNodeById(Number(nodeId))
     this.currentMovingNode = node
     window.addEventListener('mousemove', this.handleNodeMovement)
@@ -119,13 +125,10 @@ export default class App {
     switch (identifier) {
       case 'question':
         return target.parentElement
-        break
       case 'answer':
         return target.parentElement
-        break
       case 'node':
         return target
-        break
       default:
         return null
     }

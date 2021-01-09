@@ -1,10 +1,12 @@
+import Collection from './collection'
 import Node from './node'
 
 export default class Tree {
   private nodeCounter: number
   private root: Node
-
-  constructor() {
+  private collection: Collection
+  constructor(collection: Collection) {
+    this.collection = collection
     this.nodeCounter = 1
     this.root = new Node(this.nodeCounter)
   }
@@ -15,9 +17,16 @@ export default class Tree {
     const node = new Node(++this.nodeCounter)
     return node
   }
-  public appendNode(nodeId: number, appendingNode: Node, answer: string): void {
-    const node = this.getNodeById(nodeId)
-    node.append(answer, appendingNode)
+  public appendNode(node: Node, appendingNodeId: number, answerId: string): void {
+    let appendingNode = null
+    if(this.collection.has(appendingNodeId)) {
+      appendingNode = this.collection.get(appendingNodeId)
+      this.collection.delete(appendingNodeId)
+    } else {
+      appendingNode = this.getNodeById(appendingNodeId)
+    }
+    node.append(answerId, appendingNode)
+    console.log(this)
   }
   public init(): HTMLElement {
     const element = this.root.init()

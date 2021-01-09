@@ -70,6 +70,7 @@ export default class Node {
     this.answers.forEach(( _, i ) => this.children[i] = null)
   }
   public find(nodeId: number): Node {
+    console.log('calling find')
     if(nodeId === this.nodeId) return this
     for(const key in this.children) {
       const node = this.children[key].find(nodeId)
@@ -77,8 +78,8 @@ export default class Node {
     }
     return null
   }
-  public append(answer: string, node: Node): void {
-    this.children[answer] = node
+  public append(answerId: string, node: Node): void {
+    this.children[answerId] = node
   }
   public init(): HTMLElement {
     this.domElement = this.createElement()
