@@ -1,5 +1,6 @@
 import Tree from "./tree"
 import Node from "./node"
+import LineManager from "./line-manager"
 
 export default class App {
   private header: HTMLElement
@@ -8,12 +9,14 @@ export default class App {
   private collection: {
     [key: number]: Node
   }
+  private lineManager: LineManager
   private currentMovingNode: Node
   private currentDraggingNode: Node
   constructor() {
     this.header = document.querySelector('header')
     this.main = document.querySelector('main')
     this.tree = new Tree()
+    this.lineManager = new LineManager()
     this.collection = {}
     this.currentMovingNode = null
     this.currentDraggingNode = null
@@ -29,6 +32,11 @@ export default class App {
     e.preventDefault()
     nodeElement.classList.remove('dropping')
     nodeElement.style.border = '2px solid red'
+    const line = this.lineManager.createLine(
+      document.querySelector(`[data-node-id="${this.currentDraggingNode.nodeId}"]`),
+      nodeElement
+    )
+    document.body.appendChild(line)
   }
   private handleAnswerDragStart(e: DragEvent): void {
     const target = e.target as HTMLElement
