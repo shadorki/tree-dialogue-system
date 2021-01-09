@@ -58,7 +58,7 @@ main {
   border-radius: 12px;
   box-shadow: 10px 5px 5px rgba(0, 0, 0, 0.555);
 }
-.question.dropping {
+.node.dropping {
   background-color: rgb(61, 61, 212);
   cursor: copy !important;
 }

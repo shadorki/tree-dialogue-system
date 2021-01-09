@@ -4,6 +4,7 @@ export default class Node {
   private children: {
     [key: string]: Node
   }
+  private answers: string[]
   private _question: HTMLElement
   private _position: {
     x: number
@@ -12,12 +13,13 @@ export default class Node {
   constructor(nodeId: number) {
     this.domElement = null
     this.nodeId = nodeId
-    this.children = {
-      'Answer 1': null,
-      'Answer 2': null,
-      'Answer 3': null,
-      'Answer 4': null
-    }
+    this.children = {}
+    this.answers = [
+      'Answer 1',
+      'Answer 2',
+      'Answer 3',
+      'Answer 4'
+    ]
     this._question = null
     this._position = null
   }
@@ -49,14 +51,11 @@ export default class Node {
     this._question.className = 'question'
     this._question.dataset.identifier = 'question'
     this._question.textContent = 'What is your Question?'
-    const answers =
-    Object
-    .keys(this.children)
-    .map((answer, index) => {
+    const answers = this.answers.map((answer, index) => {
       const a = document.createElement('p')
       a.textContent = answer
       a.dataset.identifier = 'answer'
-      a.dataset.answerIndex = index
+      a.dataset.answerId = index
       a.draggable = true
       a.className = 'answer'
       return a
@@ -67,6 +66,9 @@ export default class Node {
     )
     return nodeElement
   }
+  private initChildren(): void {
+    this.answers.forEach(( _, i ) => this.children[i] = null)
+  }
   public find(nodeId: number): Node {
     if(nodeId === this.nodeId) return this
     for(const key in this.children) {
@@ -75,8 +77,12 @@ export default class Node {
     }
     return null
   }
+  public append(answer: string, node: Node): void {
+    this.children[answer] = node
+  }
   public init(): HTMLElement {
     this.domElement = this.createElement()
+    this.initChildren()
     this.position = [100, 100]
     return this.domElement
   }

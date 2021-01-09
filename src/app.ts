@@ -19,6 +19,17 @@ export default class App {
     this.currentDraggingNode = null
     this.handleNodeMovement = this.handleNodeMovement.bind(this)
   }
+  private handleAnswerDrop(e: DragEvent): void {
+    const target = e.target as HTMLElement
+    const { identifier } = target.dataset
+    if (identifier !== 'question') return
+    let nodeElement = this.sortEventElement(target)
+    if (!nodeElement) return
+    if (Number(nodeElement.dataset.nodeId) === this.currentDraggingNode.nodeId) return
+    e.preventDefault()
+    nodeElement.classList.remove('dropping')
+    nodeElement.style.border = '2px solid red'
+  }
   private handleAnswerDragStart(e: DragEvent): void {
     const target = e.target as HTMLElement
     const { identifier } = target.dataset
@@ -29,16 +40,16 @@ export default class App {
                               : this.tree.getNodeById(Number(nodeId))
     e.dataTransfer.effectAllowed = 'uninitialized'
   }
-  private handleAnswerDragEnter(e: DragEvent): void {
+  private handleAnswerDragOver(e: DragEvent): void {
+    e.preventDefault()
     const target = e.target as HTMLElement
     const { identifier } = target.dataset
     if(identifier  !== 'question') return
     let nodeElement = this.sortEventElement(target)
     if(!nodeElement) return
     if(Number(nodeElement.dataset.nodeId) === this.currentDraggingNode.nodeId) return
-    target.classList.add('dropping')
+    nodeElement.classList.add('dropping')
     e.dataTransfer.dropEffect = 'copy'
-    e.preventDefault()
   }
   private handleAnswerDragLeave(e: DragEvent): void {
     const target = e.target as HTMLElement
@@ -87,8 +98,9 @@ export default class App {
   private addEventListeners(): void {
     this.main.addEventListener('mousedown', this.handleNodeMovementStart.bind(this))
     this.main.addEventListener('dragstart', this.handleAnswerDragStart.bind(this))
-    this.main.addEventListener('dragenter', this.handleAnswerDragEnter.bind(this))
+    this.main.addEventListener('dragover', this.handleAnswerDragOver.bind(this))
     this.main.addEventListener('dragleave', this.handleAnswerDragLeave.bind(this))
+    this.main.addEventListener('drop', this.handleAnswerDrop.bind(this))
     this.header.addEventListener('click', this.handleNavAction.bind(this))
     window.addEventListener('mouseup', this.handleNodeMovementEnd.bind(this))
   }

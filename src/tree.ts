@@ -15,6 +15,10 @@ export default class Tree {
     const node = new Node(++this.nodeCounter)
     return node
   }
+  public appendNode(nodeId: number, appendingNode: Node, answer: string): void {
+    const node = this.getNodeById(nodeId)
+    node.append(answer, appendingNode)
+  }
   public init(): HTMLElement {
     const element = this.root.init()
     return element
