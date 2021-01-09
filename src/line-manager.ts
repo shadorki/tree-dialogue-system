@@ -11,4 +11,7 @@ export default class LineManager {
     this.lines.push(line)
     return line.init()
   }
+  update(): void {
+    this.lines.forEach(l => l.update())
+  }
 }

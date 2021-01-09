@@ -98,6 +98,7 @@ export default class App {
       pageX - width / 2,
       pageY - height / 2
     ]
+    this.lineManager.update()
   }
   private handleNodeMovementEnd(e: Event): void {
     this.currentMovingNode = null
@@ -111,6 +112,7 @@ export default class App {
     this.main.addEventListener('drop', this.handleAnswerDrop.bind(this))
     this.header.addEventListener('click', this.handleNavAction.bind(this))
     window.addEventListener('mouseup', this.handleNodeMovementEnd.bind(this))
+    window.addEventListener('scroll', this.lineManager.update.bind(this.lineManager))
   }
   private sortEventElement(target: HTMLElement): HTMLElement {
     const { identifier } = target.dataset

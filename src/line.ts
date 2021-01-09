@@ -25,7 +25,6 @@ export default class Line {
       x2: toLeft + (this.to.clientWidth / 2),
       y2: toTop + (this.to.clientHeight / 2)
     }
-    console.log(attrs)
     for (const attribute in attrs) {
       this.domElement.firstElementChild.setAttribute(attribute, attrs[attribute])
     }
